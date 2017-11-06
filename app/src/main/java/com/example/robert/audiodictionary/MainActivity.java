@@ -2,7 +2,9 @@ package com.example.robert.audiodictionary;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -13,17 +15,22 @@ import android.widget.TextView;
 public class MainActivity extends Activity {
 
     AutoCompleteTextView mEnterWord;
+    private Dictionary mDictionary;
+    private final String TAG = "MainActivity";
+    private String[] recentSearches = new String[] {
+            "Belgium", "France", "Italy", "Germany","Germania", "Spain"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mDictionary = new Dictionary(getApplicationContext());
         mEnterWord = findViewById(R.id.AutoCompleteTextView);
-        //mEnterWord.setCompletionHint("hint");
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, COUNTRIES);
+                android.R.layout.simple_dropdown_item_1line, recentSearches);
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.AutoCompleteTextView);
         textView.setAdapter(adapter);
@@ -32,41 +39,35 @@ public class MainActivity extends Activity {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId == EditorInfo.IME_ACTION_DONE){
-                    //Log.i(TAG,v.getText().toString());
-
-
-                    //String word = mEnterWord.getText().toString();
 
                     Intent intent = new Intent(MainActivity.this, WordActivity.class);
 
-                    startActivity(intent);
+                    String word = mEnterWord.getText().toString().toLowerCase();
+
+                    if(mDictionary.containsKey(word)){
+                        intent.putExtra("word", word);
+                        intent.putExtra("defList", mDictionary.getValue(word));
+                        startActivity(intent);
+                        return true;
+                    } else {
+                        Log.i(TAG, "Could not find word");
+                        mEnterWord.setText("Could Not Find Word");
+                        return false;
+                    }
                 }
+
                 return false;
             }
         });
         mEnterWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mEnterWord.setText("");
+                //mEnterWord.setText("house");
             }
         });
-        /*
-        mEnterWord.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean b) {
-                if(b)
-                    mEnterWord.setText("true");
-                else
-                    mEnterWord.setText("false");
-
-            }
-        });
-        */
 
     }
-    private static final String[] COUNTRIES = new String[] {
-            "Belgium", "France", "Italy", "Germany","Germania", "Spain"
-    };
+
 
 
 
