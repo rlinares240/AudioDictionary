@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -51,7 +52,7 @@ public class MainActivity extends Activity {
                         return true;
                     } else {
                         Log.i(TAG, "Could not find word");
-                        mEnterWord.setText("Could Not Find Word");
+                        Toast.makeText(getApplicationContext(),"Couldn't find Word",Toast.LENGTH_LONG).show();
                         return false;
                     }
                 }
@@ -62,7 +63,7 @@ public class MainActivity extends Activity {
         mEnterWord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //mEnterWord.setText("house");
+                mEnterWord.setText("");
             }
         });
 

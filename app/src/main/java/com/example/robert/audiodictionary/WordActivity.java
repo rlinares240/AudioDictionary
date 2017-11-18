@@ -1,9 +1,13 @@
 package com.example.robert.audiodictionary;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -12,7 +16,6 @@ public class WordActivity extends Activity {
 
     TextView mWord;
     TextView mDefinition;
-    //DictionaryEntry mEntry;
     String word;
     ArrayList<Tuple> defList;
     private final static String TAG = "WordActivity";
@@ -34,14 +37,24 @@ public class WordActivity extends Activity {
             Log.i(TAG,"Error getting extra");
         }
 
-        //if(mEntry != null) {
-            mWord.setText(word);
-            String text = "";
-            for(Tuple t: defList){
-                text += t.getPOS() + " - " + t.getDefinition() + "\n";
-            }
+        mWord.setText(word);
+        String text = "";
+        for(Tuple t: defList){
+            text += t.getPOS() + " - " + t.getDefinition() + "\n";
+        }
 
-           mDefinition.setText(text );
-       // }
+       mDefinition.setText(text );
+
     }
+
+    public void changeFragment(View view) {
+        Fragment soundEntry1 = new SoundEntry();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.container1,soundEntry1);
+        fragmentTransaction.commit();
+
+    }
+
+
 }
