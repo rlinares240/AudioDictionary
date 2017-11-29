@@ -57,12 +57,11 @@
     </ScrollView>
 
 
-    <fragment
-        android:name="com.example.robert.audiodictionary.SoundEntry"
+    <FrameLayout
+        android:id="@+id/action_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/action_container"
-        android:layout_weight="1"/>
+        android:layout_weight="1" />
 
 
 
