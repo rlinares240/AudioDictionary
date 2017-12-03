@@ -2,12 +2,16 @@ package com.example.robert.audiodictionary;
 
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,23 +37,21 @@ public class SubmitForm extends Fragment {
     private Button mRecord,mStop;
     private String outputFile;
     private EditText mName;
+    private EditText mRegion;
     private TextView mWord;
+    private boolean permissionToRecordAccepted = false;
+    private String[] permissions = {Manifest.permission.RECORD_AUDIO};
+    private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-//        mRecord = (Button) container.findViewById(R.id.record_button);
-//        mPlay = (Button) container.findViewById(R.id.play_button);
-//        mSubmit =(Button) container.findViewById(R.id.submit_button);
-//        mStop = (Button) container.findViewById(R.id.stop_button);
-//        outputFile= Environment.getExternalStorageDirectory().getAbsolutePath() + "recording.3gp";
-//        mSubmit.setEnabled(false);
-//        mPlay.setEnabled(false);
-//        mStop.setEnabled(false);
 
-        mAudioRecorder= new MediaRecorder();
+
         mDatabase = new DatabaseHelper(getActivity());
 
+        ActivityCompat.requestPermissions(this.getActivity(),permissions,REQUEST_RECORD_AUDIO_PERMISSION);
         return inflater.inflate(R.layout.form, container, false);
 
 
@@ -64,85 +66,89 @@ public class SubmitForm extends Fragment {
         mStop = (Button) getView().findViewById(R.id.stop_button);
         mName = (EditText) getView().findViewById(R.id.submission_name);
         mWord = (TextView) getActivity().findViewById(R.id.word);
-//      outputFile= Environment.getExternalStorageDirectory().getAbsolutePath() + "recording.3gp";
+        mRegion = (EditText)getActivity().findViewById(R.id.region);
+      outputFile= getActivity().getExternalCacheDir().getAbsolutePath() + "/recording.3gp";
 
-        mSubmit.setEnabled(true);
+        mSubmit.setEnabled(false);
         mPlay.setEnabled(false);
         mStop.setEnabled(false);
-//        mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-//        mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-//        mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-//        mAudioRecorder.setOutputFile(outputFile);
+
 
 
 //
-//        mRecord.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//                //TODO need to check if deviceId already exists in DB, for the word entry. if yes then confirm override
-//                try{
-//                    mAudioRecorder.prepare();
-//                    mAudioRecorder.start();
-//                }catch(IllegalStateException e){
-//
-//                }catch(IOException i){
-//
-//                }
-//                mRecord.setEnabled(false);
-//                mStop.setEnabled(true);
-//                Toast.makeText(getContext(),"Recording in Progress",Toast.LENGTH_LONG).show();
-//            }
-//        });
-//
-//        mStop.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mAudioRecorder.stop();
-//                mStop.setEnabled(false);
-//                mPlay.setEnabled(true);
-//                mSubmit.setEnabled(true);
-//                mRecord.setEnabled(true);
-//                Toast.makeText(getContext(),"Recording Complete",Toast.LENGTH_LONG).show();
-//                // save to a local file then when user clicks submit it will display the dialog
-//            }
-//        });
-//
-//
-//        mPlay.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                MediaPlayer player = new MediaPlayer();
-//                try{
-//                    player.setDataSource(outputFile);
-//                    player.prepare();
-//                    player.start();
-//                    Toast.makeText(getContext(),"Playing Audio",Toast.LENGTH_LONG).show();
-//                }catch(Exception e){
-//
-//                }
+        mRecord.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                mAudioRecorder= new MediaRecorder();
+                mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+                mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+                mAudioRecorder.setOutputFile(outputFile);
+                //TODO need to check if deviceId already exists in DB, for the word entry. if yes then confirm override
+                try{
+                    mAudioRecorder.prepare();
+                    mAudioRecorder.start();
+                }catch(IllegalStateException e){
+
+                }catch(IOException i){
+
+                }
+                mRecord.setEnabled(false);
+                mStop.setEnabled(true);
+                Toast.makeText(getContext(),"Recording in Progress",Toast.LENGTH_LONG).show();
+            }
+        });
+
+
+        //TODO FIX THIS
+        mStop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mAudioRecorder.stop();
+                mAudioRecorder.release();
+
+                mStop.setEnabled(false);
+                mPlay.setEnabled(true);
+                mSubmit.setEnabled(true);
+                mRecord.setEnabled(true);
+                Toast.makeText(getContext(),"Recording Complete",Toast.LENGTH_LONG).show();
+                // save to a local file then when user clicks submit it will display the dialog
+            }
+        });
 //
 //
-//
-//            }
-//        });
-//
-//        mSubmit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//
-//            //display dialog box to confirm user's submission, if entry already exists, then dialog box to confirm DB entry override
-//
-//
-//            }
-//        });
+        mPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MediaPlayer player = new MediaPlayer();
+                try{
+                    player.setDataSource(outputFile);
+                    player.prepare();
+                    player.start();
+                    Toast.makeText(getContext(),"Playing Audio",Toast.LENGTH_SHORT).show();
+                }catch(Exception e){
+
+                }
+
+
+
+            }
+        });
+
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //have to add conditional to check if fields are non empty
                 EntryTable contact = new EntryTable();
                 contact.setWord(mWord.getText().toString());
                 contact.setName(mName.getText().toString());
+                contact.setDeviceId(getDeviceID());
+                contact.setRegion(mRegion.getText().toString());
+                //
+                //contact.setSoundConverted();
                 long res = mDatabase.insertEntry(contact);
                 if(res == 1) {
                     getActivity().getFragmentManager().popBackStack();
@@ -164,5 +170,18 @@ public class SubmitForm extends Fragment {
         @SuppressLint("MissingPermission") String deviceId= manager.getDeviceId();
         return deviceId;
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
+        switch(requestCode){
+            case REQUEST_RECORD_AUDIO_PERMISSION:
+                permissionToRecordAccepted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                break;
+
+        }
+        if(!permissionToRecordAccepted) getActivity().finish();
+    }
+
 
 }

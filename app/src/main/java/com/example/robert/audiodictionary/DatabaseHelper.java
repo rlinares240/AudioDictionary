@@ -17,11 +17,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VER = 4;
     private SQLiteDatabase database;
     public static final String DATABASE_NAME = "sound.db";
-    public static final String TABLE_NAME = "tbl1";
-    public static final String COLUMN_ID_WORD = "entry";
+    //public static final String DATABASE_NAME1 = "submissions.db";
 
-    public static final String COLUMN_NAME = "name";
-    public static final String COLUMN_REGION = "Location";
+    public static final String TABLE_NAME = "tbl1";
+    public static final String COLUMN_WORD = "word"; // word
+
+    public static final String COLUMN_NAME = "name"; // user name
+    public static final String COLUMN_REGION = "location"; // user region
+    public static final String COLUMN_ID = "deviceId"; // user's device id
+
+    public static final String COLUMN_RECORDING= "recording"; // blob used to store sound file
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DB_VER);
@@ -29,8 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_ID_WORD + " VARCHAR," +
-                COLUMN_NAME + " VARCHAR PRIMARY KEY);");
+        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," + COLUMN_ID + "VARCHAR,"+
+                COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ "VARCHAR," + COLUMN_RECORDING + "BLOB not null );");
     }
 
     @Override
@@ -41,8 +46,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public long insertEntry(EntryTable contact) {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COLUMN_ID_WORD,contact.getWord());
+        contentValues.put(COLUMN_WORD,contact.getWord());
         contentValues.put(COLUMN_NAME, contact.getName());
+        contentValues.put(COLUMN_ID,contact.getDeviceId());
+        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+        contentValues.put(COLUMN_REGION, contact.getRegion());
         long res = database.insert(TABLE_NAME, null, contentValues);
         if(res != -1) {
             database.close();
