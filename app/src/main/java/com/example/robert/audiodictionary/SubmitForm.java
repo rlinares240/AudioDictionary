@@ -8,6 +8,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -23,7 +24,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -114,6 +121,7 @@ public class SubmitForm extends Fragment {
                 mRecord.setEnabled(true);
                 Toast.makeText(getContext(),"Recording Complete",Toast.LENGTH_LONG).show();
                 // save to a local file then when user clicks submit it will display the dialog
+
             }
         });
 //
@@ -145,15 +153,29 @@ public class SubmitForm extends Fragment {
                 EntryTable contact = new EntryTable();
                 contact.setWord(mWord.getText().toString());
                 contact.setName(mName.getText().toString());
+                System.out.println(getDeviceID());
                 contact.setDeviceId(getDeviceID());
                 contact.setRegion(mRegion.getText().toString());
-                //
-                //contact.setSoundConverted();
+
+
+                byte[] soundConverted = new byte[0];
+
+
+                try {
+                    InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
+                    soundConverted = new byte[inputStream.available()];
+                    soundConverted = toByteArray(inputStream);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                contact.setSoundConverted(soundConverted);
+
                 long res = mDatabase.insertEntry(contact);
-                if(res == 1) {
+                if (res == 1) {
                     getActivity().getFragmentManager().popBackStack();
                     ArrayList<EntryTable> entries = mDatabase.getAllRecords();
-                    for(EntryTable a : entries) {
+                    for (EntryTable a : entries) {
                         Log.d("Name", a.getName());
                     }
                 }
@@ -164,10 +186,26 @@ public class SubmitForm extends Fragment {
 
     }
 
+    public byte[] toByteArray(InputStream in) throws IOException{
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        int read = 0;
+        byte[] buffer = new byte[1024];
+        while(read != -1){
+            read = in.read(buffer);
+            if(read!=-1)
+                out.write(buffer,0,read);
+        }
+        out.close();
+        return out.toByteArray();
+
+    }
+
+
     public String getDeviceID(){
 
         TelephonyManager manager = (TelephonyManager ) getContext().getSystemService(Context.TELEPHONY_SERVICE);
         @SuppressLint("MissingPermission") String deviceId= manager.getDeviceId();
+        System.out.println(deviceId);
         return deviceId;
     }
 

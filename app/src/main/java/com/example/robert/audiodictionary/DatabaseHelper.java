@@ -47,10 +47,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_WORD,contact.getWord());
-        contentValues.put(COLUMN_NAME, contact.getName());
         contentValues.put(COLUMN_ID,contact.getDeviceId());
-        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+        contentValues.put(COLUMN_NAME, contact.getName());
         contentValues.put(COLUMN_REGION, contact.getRegion());
+        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+
         long res = database.insert(TABLE_NAME, null, contentValues);
         if(res != -1) {
             database.close();
