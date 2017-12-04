@@ -24,7 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String COLUMN_NAME = "name"; // user name
     public static final String COLUMN_REGION = "location"; // user region
-    public static final String COLUMN_ID = "deviceId"; // user's device id
+   // public static final String COLUMN_ID = "deviceId"; // user's device id
 
     public static final String COLUMN_RECORDING= "recording"; // blob used to store sound file
 
@@ -34,7 +34,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," + COLUMN_ID + " VARCHAR,"+
+        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," +
                 COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ " VARCHAR," + COLUMN_RECORDING + " BLOB not null );");
     }
 
@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database = this.getReadableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COLUMN_WORD,contact.getWord());
-        contentValues.put(COLUMN_ID,contact.getDeviceId());
+       // contentValues.put(COLUMN_ID,contact.getDeviceId());
         contentValues.put(COLUMN_NAME, contact.getName());
         contentValues.put(COLUMN_REGION, contact.getRegion());
         contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
@@ -79,5 +79,36 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         database.close();
         return contacts;
     }
+
+    public int updateEntry(EntryTable contact){
+
+        String where = "name = '"+contact.getName()+"' AND word = '"+ contact.getWord()+"'";
+        database = this.getReadableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_WORD,contact.getWord());
+        contentValues.put(COLUMN_NAME, contact.getName());
+        contentValues.put(COLUMN_REGION, contact.getRegion());
+        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+
+        return database.update(TABLE_NAME,contentValues,where,null);
+
+    }
+
+
+
+
+    public  boolean checkIfExists(String TableName,String wordVal, String nameVal) {
+        database = this.getReadableDatabase();
+        String Query = "Select * from " + TableName + " where word = '" + wordVal + "' AND name = '"  + nameVal+"'";
+
+        Cursor cursor = database.rawQuery(Query, null);
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
 
 }

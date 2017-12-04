@@ -4,8 +4,10 @@ package com.example.robert.audiodictionary;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -32,6 +34,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Rodrigo on 11/19/17.
@@ -50,6 +53,7 @@ public class SubmitForm extends Fragment {
     private String[] permissions = {Manifest.permission.RECORD_AUDIO};
     private static final int REQUEST_RECORD_AUDIO_PERMISSION = 200;
 
+    private String deviceID;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class SubmitForm extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        //deviceID = UUID.randomUUID().toString();
         mRecord = (Button) getView().findViewById(R.id.record_button);
         mPlay = (Button) getView().findViewById(R.id.play_button);
         mSubmit =(Button) getView().findViewById(R.id.submit_button);
@@ -103,12 +108,12 @@ public class SubmitForm extends Fragment {
                 }
                 mRecord.setEnabled(false);
                 mStop.setEnabled(true);
-                Toast.makeText(getContext(),"Recording in Progress",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Recording in Progress",Toast.LENGTH_SHORT).show();
             }
         });
 
 
-        //TODO FIX THIS
+
         mStop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,7 +124,7 @@ public class SubmitForm extends Fragment {
                 mPlay.setEnabled(true);
                 mSubmit.setEnabled(true);
                 mRecord.setEnabled(true);
-                Toast.makeText(getContext(),"Recording Complete",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"Recording Complete",Toast.LENGTH_SHORT).show();
                 // save to a local file then when user clicks submit it will display the dialog
 
             }
@@ -149,36 +154,91 @@ public class SubmitForm extends Fragment {
             @Override
             public void onClick(View v) {
 
-                //have to add conditional to check if fields are non empty
-                EntryTable contact = new EntryTable();
-                contact.setWord(mWord.getText().toString());
-                contact.setName(mName.getText().toString());
-                //System.out.println(getDeviceID());
-                //contact.setDeviceId(getDeviceID());
-                contact.setDeviceId("12345");
-                contact.setRegion(mRegion.getText().toString());
+                boolean entryExists = false;
 
+               entryExists= mDatabase.checkIfExists("tbl1",mWord.getText().toString(),
+                        mName.getText().toString());
 
-                byte[] soundConverted = new byte[0];
+                if(entryExists == true){
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setTitle("Entry Exists");
+                    alert.setMessage("An entry for this already exits, do you want to overwrite it?");
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            EntryTable contact = new EntryTable();
+                            contact.setWord(mWord.getText().toString());
+                            contact.setName(mName.getText().toString());
+                            contact.setRegion(mRegion.getText().toString());
+                            byte[] soundConverted = new byte[0];
+                            try {
+                                InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
+                                soundConverted = new byte[inputStream.available()];
+                                soundConverted = toByteArray(inputStream);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            contact.setSoundConverted(soundConverted);
+                           int changed = mDatabase.updateEntry(contact);
 
+                           System.out.println("ROWS UPDATED: " + changed);
+                           dialogInterface.dismiss();
+                        }
+                    });
 
-                try {
-                    InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
-                    soundConverted = new byte[inputStream.available()];
-                    soundConverted = toByteArray(inputStream);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                        alert.show();
+                }else {
+                   final  EntryTable contact = new EntryTable();
 
-                contact.setSoundConverted(soundConverted);
-
-                long res = mDatabase.insertEntry(contact);
-                if (res == 1) {
-                    getActivity().getFragmentManager().popBackStack();
-                    ArrayList<EntryTable> entries = mDatabase.getAllRecords();
-                    for (EntryTable a : entries) {
-                        Log.d("Name", a.getName());
+                    contact.setWord(mWord.getText().toString());
+                    contact.setName(mName.getText().toString());
+                    contact.setRegion(mRegion.getText().toString());
+                    byte[] soundConverted = new byte[0];
+                    try {
+                        InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
+                        soundConverted = new byte[inputStream.available()];
+                        soundConverted = toByteArray(inputStream);
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
+
+                    contact.setSoundConverted(soundConverted);
+
+
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+                    alert.setTitle("Confirm Submission");
+                    alert.setMessage("Are you sure you want to submit?");
+                    alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                           long res = mDatabase.insertEntry(contact);
+//                            if (res == 1) {
+//                                getActivity().getFragmentManager().popBackStack();
+//                                ArrayList<EntryTable> entries = mDatabase.getAllRecords();
+//                                for (EntryTable a : entries) {
+//                                    Log.d("Name", a.getName());
+//                                }
+//                            }
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+
+                    alert.show();
+
+
                 }
 
             }
