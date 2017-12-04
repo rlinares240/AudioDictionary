@@ -153,8 +153,9 @@ public class SubmitForm extends Fragment {
                 EntryTable contact = new EntryTable();
                 contact.setWord(mWord.getText().toString());
                 contact.setName(mName.getText().toString());
-                System.out.println(getDeviceID());
-                contact.setDeviceId(getDeviceID());
+                //System.out.println(getDeviceID());
+                //contact.setDeviceId(getDeviceID());
+                contact.setDeviceId("12345");
                 contact.setRegion(mRegion.getText().toString());
 
 

@@ -34,8 +34,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," + COLUMN_ID + "VARCHAR,"+
-                COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ "VARCHAR," + COLUMN_RECORDING + "BLOB not null );");
+        db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," + COLUMN_ID + " VARCHAR,"+
+                COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ " VARCHAR," + COLUMN_RECORDING + " BLOB not null );");
     }
 
     @Override
