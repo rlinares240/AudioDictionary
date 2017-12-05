@@ -75,6 +75,9 @@ public class Dictionary {
     public boolean containsKey(String key) {
         return wordMap.containsKey(key);
     }
+    public ArrayList<String> getKeys() {
+        return new ArrayList<String>(wordMap.keySet());
+    }
 
 
 

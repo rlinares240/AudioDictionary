@@ -13,6 +13,8 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends Activity {
 
     AutoCompleteTextView mEnterWord;
@@ -31,7 +33,7 @@ public class MainActivity extends Activity {
         mEnterWord = findViewById(R.id.AutoCompleteTextView);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, recentSearches);
+                android.R.layout.simple_dropdown_item_1line, mDictionary.getKeys());
         AutoCompleteTextView textView = (AutoCompleteTextView)
                 findViewById(R.id.AutoCompleteTextView);
         textView.setAdapter(adapter);
