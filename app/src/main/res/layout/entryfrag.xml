@@ -13,7 +13,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorLightGray"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="Author"/>
 
         <TextView
             android:id="@+id/accuracy"
@@ -21,7 +22,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorLightGray"
-            android:gravity="center" />
+            android:gravity="center"
+            android:text="Accuracy"/>
 
         <TextView
             android:id="@+id/clarity"
@@ -29,6 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
+            android:text="Clarity"
             android:background="@color/colorLightGray" />
 
         <TextView

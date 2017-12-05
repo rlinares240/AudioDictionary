@@ -18,7 +18,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DB_VER = 5;
     private SQLiteDatabase database;
     public static final String DATABASE_NAME = "sound.db";
-    //public static final String DATABASE_NAME1 = "submissions.db";
 
     public static final String TABLE_NAME = "tbl2";
     public static final String COLUMN_WORD = "word"; // word

@@ -22,9 +22,9 @@ public class EntryAdapter extends BaseAdapter {
     private ArrayList<EntryTable> objects = new ArrayList<EntryTable>();
 
     public class ViewHolder {
-        TextView word;
+        TextView accuracy;
         TextView name;
-        //String soundLocation;
+        TextView clarity;
         Button play;
     }
 
@@ -55,8 +55,9 @@ public class EntryAdapter extends BaseAdapter {
         if(convertView == null) {
             holder = new ViewHolder();
             convertView = (View) inflater.inflate(R.layout.entry_list, null);
-            holder.word = (TextView) convertView.findViewById(R.id.entry_word);
             holder.name = (TextView) convertView.findViewById(R.id.author);
+            holder.accuracy = (TextView) convertView.findViewById(R.id.accuracy_tally);
+            holder.clarity = (TextView) convertView.findViewById(R.id.clarity_tally);
             holder.play = (Button) convertView.findViewById(R.id.play_button1);
             // holder.location = (TextView) nv.findViewById(R.id.region);
            // holder.soundLocation = entry.getSoundLocation();
@@ -66,10 +67,17 @@ public class EntryAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.word.setText(entry.getWord().toString());
+        holder.accuracy.setText("100%");
+        holder.clarity.setText("100%");
         holder.name.setText(entry.getName().toString());
-        System.out.println(entry.getRegion().toString());
-        final String soundLocation=entry.getSoundLocation();
+        holder.name.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+//        System.out.println(entry.getRegion().toString());
+        final String soundLocation = entry.getSoundLocation();
        // holder.soundLocation = entry.getSoundLocation();
 
 
@@ -77,7 +85,7 @@ public class EntryAdapter extends BaseAdapter {
         holder.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("INSIDE THE LISTENER");
+//                System.out.println("INSIDE THE LISTENER");
                 MediaPlayer player = new MediaPlayer();
                 try{
                    System.out.println(soundLocation);

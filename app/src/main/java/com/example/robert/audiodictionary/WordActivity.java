@@ -29,7 +29,6 @@ public class WordActivity extends Activity implements TextToSpeech.OnInitListene
     TextView mWord;
     Button mPlayAudio;
     TextView mDefinition;
-    EntryAdapter mAdapter;
     String word;
     Button mSubmit;
     private int CHECK_TTS  = 0;
