@@ -79,7 +79,8 @@ public class SubmitForm extends Fragment {
         mName = (EditText) getView().findViewById(R.id.submission_name);
         mWord = (TextView) getActivity().findViewById(R.id.word);
         mRegion = (EditText)getActivity().findViewById(R.id.region);
-      outputFile= getActivity().getExternalCacheDir().getAbsolutePath() + "/recording.3gp";
+      //outputFile= getActivity().getExternalCacheDir().getAbsolutePath() + "/recording.3gp";
+
 
         mSubmit.setEnabled(false);
         mPlay.setEnabled(false);
@@ -96,9 +97,14 @@ public class SubmitForm extends Fragment {
                 mAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
                 mAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
                 mAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
-                mAudioRecorder.setOutputFile(outputFile);
+
                 //TODO need to check if deviceId already exists in DB, for the word entry. if yes then confirm override
                 try{
+                    File tempFile = File.createTempFile("VoiceRecorder",".3gp", getActivity().getExternalFilesDir(null));
+                    mSubmit.setTag(tempFile);
+                    mPlay.setTag(tempFile);
+                    mAudioRecorder.setOutputFile(tempFile.getAbsolutePath());
+                    System.out.println("TEMP FILE" + tempFile.getAbsolutePath());
                     mAudioRecorder.prepare();
                     mAudioRecorder.start();
                 }catch(IllegalStateException e){
@@ -135,6 +141,8 @@ public class SubmitForm extends Fragment {
             @Override
             public void onClick(View view) {
                 MediaPlayer player = new MediaPlayer();
+                File output = (File) view.getTag();
+                outputFile = output.getAbsolutePath();
                 try{
                     player.setDataSource(outputFile);
                     player.prepare();
@@ -152,12 +160,15 @@ public class SubmitForm extends Fragment {
 
         mSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
+
 
                 boolean entryExists = false;
 
-               entryExists= mDatabase.checkIfExists("tbl1",mWord.getText().toString(),
+               entryExists= mDatabase.checkIfExists("tbl2",mWord.getText().toString(),
                         mName.getText().toString());
+
+
 
                 if(entryExists == true){
                     AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
@@ -170,19 +181,17 @@ public class SubmitForm extends Fragment {
                             contact.setWord(mWord.getText().toString());
                             contact.setName(mName.getText().toString());
                             contact.setRegion(mRegion.getText().toString());
-                            byte[] soundConverted = new byte[0];
-                            try {
-                                InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
-                                soundConverted = new byte[inputStream.available()];
-                                soundConverted = toByteArray(inputStream);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                            contact.setSoundConverted(soundConverted);
-                           int changed = mDatabase.updateEntry(contact);
+//
+                            File temp = (File) v.getTag();
+                            File newFile = new File(getActivity().getExternalFilesDir(null).getAbsoluteFile() +File.separator+ mName.getText().toString() + mWord.getText().toString()+".3gp");
+
+                            temp.renameTo(newFile);
+                            contact.setSoundLocation(newFile.getAbsolutePath());
+                            int changed = mDatabase.updateEntry(contact);
 
                            System.out.println("ROWS UPDATED: " + changed);
                            dialogInterface.dismiss();
+                            getActivity().getFragmentManager().popBackStack();
                         }
                     });
 
@@ -199,16 +208,12 @@ public class SubmitForm extends Fragment {
                     contact.setWord(mWord.getText().toString());
                     contact.setName(mName.getText().toString());
                     contact.setRegion(mRegion.getText().toString());
-                    byte[] soundConverted = new byte[0];
-                    try {
-                        InputStream inputStream = getActivity().getContentResolver().openInputStream(Uri.fromFile(new File(outputFile)));
-                        soundConverted = new byte[inputStream.available()];
-                        soundConverted = toByteArray(inputStream);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
-                    contact.setSoundConverted(soundConverted);
+                    File temp = (File)v.getTag();
+                    File newFile = new File(getActivity().getExternalFilesDir(null).getAbsoluteFile()  +"/"+ mName.getText().toString() + mWord.getText().toString()+".3gp");
+                    temp.renameTo(newFile);
+                    contact.setSoundLocation(newFile.getAbsolutePath());
+
 
 
 
@@ -248,28 +253,16 @@ public class SubmitForm extends Fragment {
 
     }
 
-    public byte[] toByteArray(InputStream in) throws IOException{
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        int read = 0;
-        byte[] buffer = new byte[1024];
-        while(read != -1){
-            read = in.read(buffer);
-            if(read!=-1)
-                out.write(buffer,0,read);
-        }
-        out.close();
-        return out.toByteArray();
-
-    }
 
 
-    public String getDeviceID(){
 
-        TelephonyManager manager = (TelephonyManager ) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-        @SuppressLint("MissingPermission") String deviceId= manager.getDeviceId();
-        System.out.println(deviceId);
-        return deviceId;
-    }
+//    public String getDeviceID(){
+//
+//        TelephonyManager manager = (TelephonyManager ) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+//        @SuppressLint("MissingPermission") String deviceId= manager.getDeviceId();
+//        System.out.println(deviceId);
+//        return deviceId;
+//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){

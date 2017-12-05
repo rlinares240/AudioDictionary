@@ -20,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "sound.db";
     //public static final String DATABASE_NAME1 = "submissions.db";
 
-    public static final String TABLE_NAME = "tbl1";
+    public static final String TABLE_NAME = "tbl2";
     public static final String COLUMN_WORD = "word"; // word
 
     public static final String COLUMN_NAME = "name"; // user name
@@ -36,7 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("create table " + TABLE_NAME + "(" + COLUMN_WORD + " VARCHAR," +
-                COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ " VARCHAR," + COLUMN_RECORDING + " BLOB not null );");
+                COLUMN_NAME + " VARCHAR," + COLUMN_REGION+ " VARCHAR," + COLUMN_RECORDING + " VARCHAR );");
     }
 
     @Override
@@ -51,7 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
        // contentValues.put(COLUMN_ID,contact.getDeviceId());
         contentValues.put(COLUMN_NAME, contact.getName());
         contentValues.put(COLUMN_REGION, contact.getRegion());
-        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+        contentValues.put(COLUMN_RECORDING,contact.getSoundLocation());
 
         long res = database.insert(TABLE_NAME, null, contentValues);
         if(res != -1) {
@@ -90,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COLUMN_WORD,contact.getWord());
         contentValues.put(COLUMN_NAME, contact.getName());
         contentValues.put(COLUMN_REGION, contact.getRegion());
-        contentValues.put(COLUMN_RECORDING,contact.getSoundConverted());
+        contentValues.put(COLUMN_RECORDING,contact.getSoundLocation());
 
         return database.update(TABLE_NAME,contentValues,where,null);
 
@@ -121,6 +121,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 EntryTable temp = new EntryTable();
                 temp.setWord(cursor.getString(cursor.getColumnIndex("word")));
                 temp.setName(cursor.getString(cursor.getColumnIndex("name")));
+                temp.setSoundLocation(cursor.getString(cursor.getColumnIndex("recording")));
+                temp.setRegion(cursor.getString(cursor.getColumnIndex("location")));
                 selections.add(temp);
                 Log.d("hey","cursor.move worked out");
             }

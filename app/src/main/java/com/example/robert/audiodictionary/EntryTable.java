@@ -11,15 +11,15 @@ public class EntryTable {
     private String deviceId;
     private String region;
     private String outputFile;
-    private byte[] soundConverted;
+    private String soundLocation;
     // has to be converted to a array of bytes before being stored as a blob
 
-    public byte[] getSoundConverted() {
-        return soundConverted;
+    public String getSoundLocation() {
+        return soundLocation;
     }
 
-    public void setSoundConverted(byte[] soundConverted) {
-        this.soundConverted = soundConverted;
+    public void setSoundLocation(String soundLocation) {
+        this.soundLocation = soundLocation;
     }
 
     public String getDeviceId() {
