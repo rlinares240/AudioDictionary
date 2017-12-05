@@ -7,9 +7,9 @@
 
     <TextView
         android:id="@+id/author"
-        android:layout_width="60dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.65"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_weight="1.29"
         android:paddingLeft="10dp"
         android:gravity="center"
         android:paddingRight="10dp"
@@ -22,8 +22,8 @@
     <TextView
         android:id="@+id/accuracy_tally"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="45dp"
+        android:layout_weight="1.19"
         android:gravity="center"
         android:textAlignment="center"
         android:paddingLeft="10dp"
@@ -34,8 +34,8 @@
     <TextView
         android:id="@+id/clarity_tally"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_height="44dp"
+        android:layout_weight="1.01"
         android:gravity="center"
         android:textAlignment="center"
         android:paddingLeft="10dp"

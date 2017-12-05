@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:visibility="visible">
+
+
+    <Button
+        android:id="@+id/thumbsup_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/play_button"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center"
+        android:layout_marginTop="116dp"
+        android:text="Good"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/thumbsdown_button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Bad"
+        android:textSize="20sp"
+        android:layout_alignBaseline="@+id/thumbsup_button1"
+        android:layout_alignBottom="@+id/thumbsup_button1"
+        android:layout_alignStart="@+id/thumbsdown_button2" />
+
+    <Button
+        android:id="@+id/sb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Submit"
+        android:textSize="20sp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+
+    <Button
+        android:id="@+id/thumbsdown_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Bad"
+        android:textSize="20sp"
+        android:layout_marginEnd="23dp"
+        android:layout_alignBaseline="@+id/thumbsup_button2"
+        android:layout_alignBottom="@+id/thumbsup_button2"
+        android:layout_alignParentEnd="true" />
+
+    <Button
+        android:id="@+id/thumbsup_button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Good"
+        android:textSize="20sp"
+        android:layout_below="@+id/thumbsup_button1"
+        android:layout_alignStart="@+id/thumbsup_button1"
+        android:layout_marginTop="36dp" />
+
+
+
+    <TextView
+        android:id="@+id/Accuracy_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Accuracy: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBaseline="@+id/thumbsup_button1"
+        android:layout_alignBottom="@+id/thumbsup_button1"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="22dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/Clarity_review"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Clarity: "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginLeft="45dp"
+        android:layout_alignBaseline="@+id/thumbsup_button2"
+        android:layout_alignBottom="@+id/thumbsup_button2"
+        android:layout_alignStart="@+id/Accuracy_review"
+        android:layout_marginStart="10dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/NameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Name:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_marginLeft="45dp"
+        android:layout_marginTop="25dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/RegionLabel">
+    </TextView>
+
+    <TextView
+        android:id="@+id/RegionLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Region:"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_below="@+id/NameLabel"
+        android:layout_alignEnd="@+id/Accuracy_review"
+        android:layout_marginTop="19dp">
+    </TextView>
+
+    <TextView
+        android:id="@+id/UserRegion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserRegion"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBaseline="@+id/RegionLabel"
+        android:layout_alignBottom="@+id/RegionLabel"
+        android:layout_alignStart="@+id/UserName">
+    </TextView>
+
+    <TextView
+        android:id="@+id/UserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="UserName"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_alignBaseline="@+id/NameLabel"
+        android:layout_alignBottom="@+id/NameLabel"
+        android:layout_centerHorizontal="true">
+    </TextView>
+
+
+</RelativeLayout>

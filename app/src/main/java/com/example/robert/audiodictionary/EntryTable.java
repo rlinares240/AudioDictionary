@@ -10,8 +10,11 @@ public class EntryTable {
     private String word;
     private String deviceId;
     private String region;
-    private String outputFile;
     private String soundLocation;
+    private int AccuracyGoodNum;
+    private int AccuracyBadNum;
+    private int ClarityGoodNum;
+    private int ClarityBadNum;
     // has to be converted to a array of bytes before being stored as a blob
 
     public String getSoundLocation() {
@@ -38,8 +41,6 @@ public class EntryTable {
         this.region = region;
     }
 
-
-
     public String getWord() {
         return word;
     }
@@ -54,6 +55,38 @@ public class EntryTable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getAccuracyGoodNum(){
+        return AccuracyGoodNum;
+    }
+
+    public void setAccuracyGoodNum(int num){
+        this.AccuracyGoodNum=num;
+    }
+
+    public int getAccuracyBadNum(){
+        return AccuracyBadNum;
+    }
+
+    public void setAccuracyBadNum(int num){
+        this.AccuracyBadNum=num;
+    }
+
+    public int getClarityGoodNum(){
+        return ClarityGoodNum;
+    }
+
+    public void setClarityGoodNum(int num){
+        this.ClarityGoodNum=num;
+    }
+
+    public int getClarityBadNum(){
+        return ClarityBadNum;
+    }
+
+    public void setClarityBadNum(int num){
+        this.ClarityBadNum=num;
     }
 
 }

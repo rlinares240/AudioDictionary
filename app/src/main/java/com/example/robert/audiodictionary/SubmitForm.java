@@ -71,7 +71,6 @@ public class SubmitForm extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //deviceID = UUID.randomUUID().toString();
         mRecord = (Button) getView().findViewById(R.id.record_button);
         mPlay = (Button) getView().findViewById(R.id.play_button);
         mSubmit =(Button) getView().findViewById(R.id.submit_button);
@@ -165,8 +164,7 @@ public class SubmitForm extends Fragment {
 
                 boolean entryExists = false;
 
-               entryExists= mDatabase.checkIfExists("tbl2",mWord.getText().toString(),
-                        mName.getText().toString());
+               entryExists= mDatabase.checkIfExists(mWord.getText().toString(), mName.getText().toString());
 
 
 
@@ -224,13 +222,6 @@ public class SubmitForm extends Fragment {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                            long res = mDatabase.insertEntry(contact);
-//                            if (res == 1) {
-//                                getActivity().getFragmentManager().popBackStack();
-//                                ArrayList<EntryTable> entries = mDatabase.getAllRecords();
-//                                for (EntryTable a : entries) {
-//                                    Log.d("Name", a.getName());
-//                                }
-//                            }
                             dialogInterface.dismiss();
                             getActivity().getFragmentManager().popBackStack();
                         }
