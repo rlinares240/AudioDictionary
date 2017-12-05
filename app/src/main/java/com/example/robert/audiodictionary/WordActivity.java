@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -28,7 +29,7 @@ public class WordActivity extends Activity implements TextToSpeech.OnInitListene
     TextView mWord;
     Button mPlayAudio;
     TextView mDefinition;
-    ListView mEntryList;
+    EntryAdapter mAdapter;
     String word;
     Button mSubmit;
     private int CHECK_TTS  = 0;
@@ -70,11 +71,10 @@ public class WordActivity extends Activity implements TextToSpeech.OnInitListene
         ttsIntent.setAction(TextToSpeech.Engine.ACTION_CHECK_TTS_DATA);
         startActivityForResult(ttsIntent, CHECK_TTS);
 
-        if(findViewById(R.id.action_container) != null){
+        if(findViewById(R.id.action_container) != null) {
             SoundEntry fragment = new SoundEntry();
             changeFragment(fragment);
         }
-
 
 
         mAdd.setOnClickListener(new View.OnClickListener() {
@@ -143,6 +143,8 @@ public class WordActivity extends Activity implements TextToSpeech.OnInitListene
 
 
     }
+
+
 
 
 }

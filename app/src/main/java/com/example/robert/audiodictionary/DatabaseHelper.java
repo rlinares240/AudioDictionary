@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DB_VER = 4;
+    private static final int DB_VER = 5;
     private SQLiteDatabase database;
     public static final String DATABASE_NAME = "sound.db";
     //public static final String DATABASE_NAME1 = "submissions.db";
@@ -72,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 entryTable = new EntryTable();
                 entryTable.setWord(cursor.getString(0));
                 entryTable.setName(cursor.getString(1));
+//                entryTable.setSoundConverted(cursor.getBlob(cursor.getCount()-1));
                 contacts.add(entryTable);
             }
         }
@@ -108,6 +110,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         cursor.close();
         return true;
+    }
+    public  ArrayList<EntryTable> checkWordEntries(String wordVal) {
+        database = this.getReadableDatabase();
+        String Query = "Select * from " + TABLE_NAME + " where word = '" + wordVal +"'";
+        ArrayList<EntryTable> selections = new ArrayList<>();
+        Cursor cursor = database.rawQuery(Query, null);
+        if(cursor != null ) {
+            while(cursor.moveToNext()) {
+                EntryTable temp = new EntryTable();
+                temp.setWord(cursor.getString(cursor.getColumnIndex("word")));
+                temp.setName(cursor.getString(cursor.getColumnIndex("name")));
+                selections.add(temp);
+                Log.d("hey","cursor.move worked out");
+            }
+            return selections;
+        }else {
+            cursor.close();
+            return null;
+        }
     }
 
 

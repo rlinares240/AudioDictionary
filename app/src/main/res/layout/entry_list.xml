@@ -11,37 +11,23 @@
         android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
         android:background="@color/colorLightGray"
-        android:text="Bill"
         android:textSize="24sp" />
-
     <TextView
-        android:id="@+id/accuracy"
+        android:id="@+id/entry_word"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:background="@color/colorLightGray"
+        android:textColor="@color/colorPrimaryDark"
         android:gravity="center"
-        android:text="100%"
+        android:background="@color/colorLightGray"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/clarity"
+    <Button
+        android:id="@+id/play_button"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/colorLightGray"
-        android:gravity="center"
-        android:text="100%"
-        android:textSize="24sp" />
+        android:layout_height="30dp"
+        android:text="Play"
+        android:textSize="18sp" />
 
-    <TextView
-        android:id="@+id/play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:background="@color/colorLightGray"
-        android:gravity="center"
-        android:text="PLAY"
-        android:textSize="24sp" />
 
 </LinearLayout>

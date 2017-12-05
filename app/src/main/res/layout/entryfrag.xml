@@ -13,8 +13,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorLightGray"
-            android:gravity="center"
-            android:text="Author" />
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/accuracy"
@@ -22,19 +21,17 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@color/colorLightGray"
+            android:gravity="center" />
+
+        <TextView
+            android:id="@+id/clarity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
-            android:text="Accuracy" />
+            android:background="@color/colorLightGray" />
 
-    <TextView
-        android:id="@+id/clarity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center"
-        android:background="@color/colorLightGray"
-        android:text="Clarity" />
-
-    <TextView
+        <TextView
             android:id="@+id/play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,8 +44,10 @@
 
     <ListView
         android:id="@+id/entries"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ListView>
 
 
 

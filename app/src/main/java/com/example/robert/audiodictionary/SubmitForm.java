@@ -227,6 +227,7 @@ public class SubmitForm extends Fragment {
 //                                }
 //                            }
                             dialogInterface.dismiss();
+                            getActivity().getFragmentManager().popBackStack();
                         }
                     });
                     alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
