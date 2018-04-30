@@ -3,42 +3,26 @@ package com.example.robert.audiodictionary;
 
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaRecorder;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.telephony.TelephonyManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.media.MediaPlayer;
-
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.UUID;
 
-/**
- * Created by Rodrigo on 11/19/17.
- */
+
 
 public class SubmitForm extends Fragment {
     DatabaseHelper mDatabase;
@@ -243,17 +227,6 @@ public class SubmitForm extends Fragment {
 
 
     }
-
-
-
-
-//    public String getDeviceID(){
-//
-//        TelephonyManager manager = (TelephonyManager ) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-//        @SuppressLint("MissingPermission") String deviceId= manager.getDeviceId();
-//        System.out.println(deviceId);
-//        return deviceId;
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults){

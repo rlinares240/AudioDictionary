@@ -13,9 +13,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by billk on 11/17/2017.
- */
 
 public class SoundEntry extends Fragment {
     ListView listView;

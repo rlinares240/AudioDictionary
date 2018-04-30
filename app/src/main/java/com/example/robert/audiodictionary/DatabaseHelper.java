@@ -9,13 +9,10 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
-/**
- * Created by billk on 11/28/2017.
- */
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final int DB_VER = 5;
+    private static final int DB_VER = 6;
     private SQLiteDatabase database;
     public static final String DATABASE_NAME = "sound.db";
     //public static final String DATABASE_NAME1 = "submissions.db";
@@ -49,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         onCreate(db);
     }
 

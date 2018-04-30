@@ -19,9 +19,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-/**
- * Created by billk on 11/29/2017.
- */
 
 public class EntryAdapter extends BaseAdapter {
     private LayoutInflater inflater;
@@ -31,6 +28,7 @@ public class EntryAdapter extends BaseAdapter {
         TextView accuracy;
         TextView name;
         TextView clarity;
+        TextView location;
         Button play;
     }
 
@@ -65,7 +63,9 @@ public class EntryAdapter extends BaseAdapter {
             holder.accuracy = (TextView) convertView.findViewById(R.id.accuracy_tally);
             holder.clarity = (TextView) convertView.findViewById(R.id.clarity_tally);
             holder.play = (Button) convertView.findViewById(R.id.play_button1);
+            holder.location = (TextView) convertView.findViewById(R.id.place);
            // holder.soundLocation = entry.getSoundLocation();
+
 
 
             convertView.setTag(holder);
@@ -77,6 +77,7 @@ public class EntryAdapter extends BaseAdapter {
         int temp2 = entry.getClarityBadNum() + entry.getClarityGoodNum();
         holder.clarity.setText("" + entry.getClarityGoodNum() + "/" + temp );
         holder.name.setText(entry.getName().toString());
+        holder.location.setText(entry.getRegion().toString());
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +85,7 @@ public class EntryAdapter extends BaseAdapter {
                 Fragment fragment = new ReviewSound();
                 Bundle bundle = new Bundle();
                 bundle.putString("name",holder.name.getText().toString());
+//                bundle.putString("place", holder.location.getText().toString());
                 fragment.setArguments(bundle);
                FragmentManager fragmentManager = ((Activity) context).getFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

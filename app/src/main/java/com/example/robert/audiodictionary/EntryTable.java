@@ -1,8 +1,6 @@
 package com.example.robert.audiodictionary;
 
-/**
- * Created by billk on 11/28/2017.
- */
+
 
 public class EntryTable {
 

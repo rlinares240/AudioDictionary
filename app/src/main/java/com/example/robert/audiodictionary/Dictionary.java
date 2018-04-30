@@ -17,9 +17,6 @@ import java.util.regex.Pattern;
 
 import static android.content.ContentValues.TAG;
 
-/**
- * Created by Robert on 11/5/2017.
- */
 
 public class Dictionary {
 

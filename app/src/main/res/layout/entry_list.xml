@@ -51,6 +51,19 @@
         android:gravity="center"
         android:text="Play"
         android:textSize="18sp" />
+    <TextView
+        android:id="@+id/place"
+        android:layout_width="wrap_content"
+        android:layout_height="43dp"
+        android:layout_weight="1.29"
+        android:paddingLeft="10dp"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        android:onClick="onClick"
+        android:clickable="true"
+        android:background="@color/colorLightGray"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="24sp" />
 
 
 </LinearLayout>
